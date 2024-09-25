@@ -1,11 +1,22 @@
-*.class
+# We don't want compiled stuff in here!
+/bin
+/build
+/run
+/libs
+/tools
+/sources
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.war
-*.ear
+# Ignore project specific files
+.classpath
+.project
+.settings
+eclipse/*
+.gradle/*
+repo/*
+*.iml
+*.ipr
+*.iws
+out/*
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
