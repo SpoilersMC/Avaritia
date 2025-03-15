@@ -19,6 +19,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BlockEvent;
 
 import java.util.*;
 import java.util.Map.Entry;
@@ -86,13 +88,18 @@ public class ToolHelper {
     }
 
     public static void removeBlockWithDrops(EntityPlayer player, ItemStack stack, World world, int x, int y, int z, Block block, Material[] materialsListing, boolean silk, int fortune, float blockHardness, boolean dispose) {
-        if(!world.blockExists(x, y, z))
+        if(!world.blockExists(x, y, z) || world.isAirBlock(x, y, z))
             return;
 
         Block blk = world.getBlock(x, y, z);
         int meta = world.getBlockMetadata(x, y, z);
 
         if(block != null && blk != block)
+            return;
+
+        BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(x, y, z, world, blk, meta, player);
+        MinecraftForge.EVENT_BUS.post(event);
+        if(event.isCanceled())
             return;
 
         Material mat = world.getBlock(x, y, z).getMaterial();
